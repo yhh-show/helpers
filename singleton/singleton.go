@@ -2,6 +2,7 @@ package singleton
 
 import "sync"
 
+// Singleton 单例模式
 type Singleton[T any] struct {
 	instance *T
 	once     *sync.Once
