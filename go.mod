@@ -1,3 +1,3 @@
 module github.com/yhh-show/helpers
 
-go 1.21.6
+go 1.21
