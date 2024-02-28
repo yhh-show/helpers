@@ -2,13 +2,13 @@ package graceful
 
 import (
 	"context"
-	"io"
+	"github.com/yhh-show/helpers/logger"
 	"os"
 	"os/signal"
 	"sync"
 	"syscall"
+	"time"
 
-	"github.com/yhh-show/helpers/inner/logger"
 	"github.com/yhh-show/helpers/safego"
 )
 
@@ -16,8 +16,6 @@ var (
 	sig    = make(chan os.Signal, 1)
 	fns    []*fnItem
 	locker = &sync.Mutex{}
-
-	LoggerWritter io.Writer = os.Stderr
 )
 
 type fnItem struct {
@@ -27,14 +25,16 @@ type fnItem struct {
 
 func Wait() {
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
-	<-sig
+	s := <-sig
 
-	logger.Println("graceful shutdown")
+	logger.Println("graceful shutdown on signal:", s)
 
 	for _, fn := range fns {
 		logger.Println("graceful shutdown:", fn.name)
 		fn.fn()
 	}
+
+	logger.Println("graceful shutdown done")
 }
 
 func Add(name string, fn func()) {
@@ -46,6 +46,8 @@ func Add(name string, fn func()) {
 
 func Run(name string, runner func(context.Context), cleaner func()) {
 	ctx, cancel := context.WithCancel(context.Background())
+
+	time.Sleep(time.Millisecond)
 
 	safego.Go(func() {
 		logger.Println("graceful run:", name)
