@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	L = log.New(os.Stderr, "", log.LstdFlags|log.Lshortfile)
+	L = log.New(os.Stderr, "", log.LstdFlags|log.Llongfile)
 )
 
 func SetLogger(l *log.Logger) {
