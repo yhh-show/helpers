@@ -8,13 +8,12 @@ var (
 	reporter Reporter
 )
 
-// todo report
 func SetReporter(r Reporter) {
 	reporter = r
 }
 
 func Report(err error, args ...any) {
-	logger.Logger.Println(append(args, err)...)
+	logger.Println(append(args, err)...)
 	if reporter != nil {
 		reporter(err, args...)
 	}
@@ -31,7 +30,7 @@ func Loe(err error, args ...any) bool {
 func Poe(err error, args ...any) bool {
 	if err != nil {
 		Report(err, args...)
-		return true
+		panic(err)
 	}
 	return false
 }
