@@ -27,14 +27,14 @@ func Wait() {
 	signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
 	s := <-sig
 
-	logger.Println("graceful shutdown on signal:", s)
+	logger.L.Println("graceful shutdown on signal:", s)
 
 	for _, fn := range fns {
-		logger.Println("graceful shutdown:", fn.name)
+		logger.L.Println("graceful shutdown:", fn.name)
 		fn.fn()
 	}
 
-	logger.Println("graceful shutdown done")
+	logger.L.Println("graceful shutdown done")
 }
 
 func Add(name string, fn func()) {
@@ -52,13 +52,13 @@ func Run(name string, runner func(context.Context), cleaner func()) {
 
 	// 执行任务
 	safego.Go(func() {
-		logger.Println("graceful run:", name)
+		logger.L.Println("graceful run:", name)
 		runner(ctx)
 	})
 
 	// 清理任务
 	Add(name, func() {
-		logger.Println("graceful clean:", name)
+		logger.L.Println("graceful clean:", name)
 
 		cancel()
 

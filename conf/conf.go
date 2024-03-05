@@ -28,7 +28,7 @@ func Load[T any]() (*T, error) {
 		return nil, fmt.Errorf("error parse env: %w", err)
 	}
 
-	logger.Println("load conf:", jsons.ToString(conf))
+	logger.L.Println("load conf:", jsons.ToString(conf))
 
 	return conf, nil
 }
@@ -36,7 +36,7 @@ func Load[T any]() (*T, error) {
 func ForceLoad[T any]() *T {
 	conf, err := Load[T]()
 	if err != nil {
-		logger.Fatalf("ForceLoad error: %v", err)
+		logger.L.Fatalf("ForceLoad error: %v", err)
 	}
 	return conf
 }

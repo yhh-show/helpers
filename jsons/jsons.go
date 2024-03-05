@@ -13,7 +13,7 @@ var json = jsoniter.Config{
 func ToString(v any) string {
 	r, e := json.MarshalToString(v)
 	if e != nil {
-		logger.Println("jsons.ToString error:", e, v)
+		logger.L.Println("jsons.ToString error:", e, v)
 	}
 	return r
 }
@@ -21,7 +21,7 @@ func ToString(v any) string {
 func ToStringPretty(v any) string {
 	r, e := json.MarshalIndent(v, "", "  ")
 	if e != nil {
-		logger.Println("jsons.ToStringPretty error:", e, v)
+		logger.L.Println("jsons.ToStringPretty error:", e, v)
 	}
 	return string(r)
 }

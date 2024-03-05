@@ -5,6 +5,7 @@ import (
 	"github.com/yhh-show/helpers/jsons"
 	"github.com/yhh-show/helpers/logger"
 	"runtime"
+	"strings"
 )
 
 type Reporter func(err error, args ...any)
@@ -23,8 +24,11 @@ func Report(err error, args ...any) bool {
 	}
 
 	_, file, line, _ := runtime.Caller(1)
+	if strings.Contains(file, "errs.go") {
+		_, file, line, _ = runtime.Caller(2)
+	}
 	a := jsons.ToString(args)
-	logger.Println(fmt.Sprintf("file: %s:%d", file, line), "| err:", err, "| args:", a)
+	logger.L.Println(fmt.Sprintf("file: %s:%d", file, line), "| err:", err, "| args:", a)
 
 	if reporter != nil {
 		reporter(err, args...)
