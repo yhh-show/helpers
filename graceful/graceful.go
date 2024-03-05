@@ -47,14 +47,19 @@ func Add(name string, fn func()) {
 func Run(name string, runner func(context.Context), cleaner func()) {
 	ctx, cancel := context.WithCancel(context.Background())
 
+	// 保证执行循序
 	time.Sleep(time.Millisecond)
 
+	// 执行任务
 	safego.Go(func() {
 		logger.Println("graceful run:", name)
 		runner(ctx)
 	})
 
+	// 清理任务
 	Add(name, func() {
+		logger.Println("graceful clean:", name)
+
 		cancel()
 
 		if cleaner != nil {
