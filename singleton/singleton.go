@@ -28,7 +28,7 @@ func (s *Singleton[T]) Get() *T {
 	return s.instance
 }
 
-func NewSingleton[T any](newer func() *T, cleaner func(*T)) *Singleton[T] {
+func New[T any](newer func() *T, cleaner func(*T)) *Singleton[T] {
 	return &Singleton[T]{
 		once:    &sync.Once{},
 		newer:   newer,
