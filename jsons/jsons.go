@@ -2,6 +2,7 @@ package jsons
 
 import (
 	jsoniter "github.com/json-iterator/go"
+	"github.com/yhh-show/helpers/logger"
 )
 
 var json = jsoniter.Config{
@@ -10,12 +11,18 @@ var json = jsoniter.Config{
 }.Froze()
 
 func ToString(v any) string {
-	r, _ := json.MarshalToString(v)
+	r, e := json.MarshalToString(v)
+	if e != nil {
+		logger.Println("jsons.ToString error:", e, v)
+	}
 	return r
 }
 
 func ToStringPretty(v any) string {
-	r, _ := json.MarshalIndent(v, "", "  ")
+	r, e := json.MarshalIndent(v, "", "  ")
+	if e != nil {
+		logger.Println("jsons.ToStringPretty error:", e, v)
+	}
 	return string(r)
 }
 
