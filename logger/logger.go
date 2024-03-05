@@ -6,19 +6,48 @@ import (
 )
 
 var (
-	Logger = log.New(os.Stderr, "", log.LstdFlags)
+	logger = log.New(os.Stderr, "", log.LstdFlags|log.Lshortfile)
 )
 
-func Println(v ...any) {
-	if Logger == nil {
+func SetLogger(l *log.Logger) {
+	if l == nil {
 		return
 	}
-	Logger.Println(v...)
+	logger = l
+}
+
+func Print(v ...any) {
+	logger.Print(v...)
+}
+
+func Printf(format string, v ...any) {
+	logger.Printf(format, v...)
+}
+
+func Println(v ...any) {
+	logger.Println(v...)
+}
+
+func Fatal(v ...any) {
+	logger.Fatal(v...)
 }
 
 func Fatalf(format string, v ...any) {
-	if Logger == nil {
-		return
-	}
-	Logger.Fatalf(format, v...)
+	logger.Fatalf(format, v...)
+}
+
+func Fatalln(v ...any) {
+	logger.Fatalln(v...)
+}
+
+func Panic(v ...any) {
+	logger.Panic(v...)
+}
+
+func Panicf(format string, v ...any) {
+	logger.Panicf(format, v...)
+}
+
+func Panicln(v ...any) {
+	logger.Panicln(v...)
 }
