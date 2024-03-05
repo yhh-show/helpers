@@ -15,3 +15,10 @@ func Println(v ...any) {
 	}
 	Logger.Println(v...)
 }
+
+func Fatalf(format string, v ...any) {
+	if Logger == nil {
+		return
+	}
+	Logger.Fatalf(format, v...)
+}
