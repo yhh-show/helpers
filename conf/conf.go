@@ -7,14 +7,17 @@ import (
 	"github.com/yhh-show/helpers/file"
 	"github.com/yhh-show/helpers/jsons"
 	"github.com/yhh-show/helpers/logger"
-	"os"
 )
 
-func Load[T any](envVarName string) (*T, error) {
-	if envVarName == "" {
-		envVarName = "APP_ENV"
+func LoadByName[T any](name string) (*T, error) {
+	var envFile string
+	var err error
+
+	if name != "" {
+		envFile, err = file.Find(".env." + name)
+	} else {
+		err = fmt.Errorf("no env name")
 	}
-	envFile, err := file.Find(".env." + os.Getenv(envVarName))
 	if err != nil {
 		envFile, err = file.Find(".env")
 		if err != nil {
@@ -36,22 +39,18 @@ func Load[T any](envVarName string) (*T, error) {
 	return conf, nil
 }
 
-func LoadDefault[T any]() (*T, error) {
-	return Load[T]("")
+func Load[T any]() (*T, error) {
+	return LoadByName[T]("")
 }
 
-func ForceLoad[T any](envVarName string) *T {
-	conf, err := Load[T](envVarName)
+func ForceLoadByName[T any](name string) *T {
+	conf, err := LoadByName[T](name)
 	if err != nil {
 		logger.L.Fatalf("ForceLoad error: %v", err)
 	}
 	return conf
 }
 
-func ForceLoadDefault[T any]() *T {
-	conf, err := Load[T]("")
-	if err != nil {
-		logger.L.Fatalf("ForceLoad error: %v", err)
-	}
-	return conf
+func ForceLoad[T any]() *T {
+	return ForceLoadByName[T]("")
 }
