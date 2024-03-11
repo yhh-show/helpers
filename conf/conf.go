@@ -10,10 +10,13 @@ import (
 	"os"
 )
 
-func Load[T any]() (*T, error) {
-	envFile, err := file.Find(".env")
+func Load[T any](envVarName string) (*T, error) {
+	if envVarName == "" {
+		envVarName = "APP_ENV"
+	}
+	envFile, err := file.Find(".env." + os.Getenv(envVarName))
 	if err != nil {
-		envFile, err = file.Find(".env." + os.Getenv("APP_ENV"))
+		envFile, err = file.Find(".env")
 		if err != nil {
 			return nil, fmt.Errorf("error find .env file: %w", err)
 		}
@@ -33,8 +36,20 @@ func Load[T any]() (*T, error) {
 	return conf, nil
 }
 
-func ForceLoad[T any]() *T {
-	conf, err := Load[T]()
+func LoadDefault[T any]() (*T, error) {
+	return Load[T]("")
+}
+
+func ForceLoad[T any](envVarName string) *T {
+	conf, err := Load[T](envVarName)
+	if err != nil {
+		logger.L.Fatalf("ForceLoad error: %v", err)
+	}
+	return conf
+}
+
+func ForceLoadDefault[T any]() *T {
+	conf, err := Load[T]("")
 	if err != nil {
 		logger.L.Fatalf("ForceLoad error: %v", err)
 	}
