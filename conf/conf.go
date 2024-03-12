@@ -34,7 +34,7 @@ func LoadByName[T any](name string) (*T, error) {
 		return nil, fmt.Errorf("error parse env: %w", err)
 	}
 
-	logger.L.Println("load conf:", jsons.ToString(conf))
+	logger.L.Println("load conf:", envFile, jsons.ToString(conf))
 
 	return conf, nil
 }
