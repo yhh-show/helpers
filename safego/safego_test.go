@@ -2,10 +2,15 @@ package safego
 
 import (
 	"errors"
+	"fmt"
+	"github.com/yhh-show/helpers/errs"
 	"testing"
 )
 
 func TestGo(t *testing.T) {
+	errs.SetReporter(func(err error, args ...any) {
+		fmt.Println("error report", err, args)
+	})
 	err := errors.New("test3")
 	tests := []struct {
 		name string

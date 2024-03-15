@@ -12,7 +12,6 @@ func Go(fn func()) chan any {
 	go func() {
 		defer func() {
 			r := recover()
-			ch <- r
 			if r != nil {
 				err, ok := r.(error)
 				if !ok {
@@ -20,6 +19,7 @@ func Go(fn func()) chan any {
 				}
 				errs.Report(err, "safego.Go panic")
 			}
+			ch <- r
 		}()
 
 		fn()
