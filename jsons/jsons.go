@@ -6,7 +6,7 @@ import (
 )
 
 var json = jsoniter.Config{
-	EscapeHTML:  true,
+	EscapeHTML:  false,
 	SortMapKeys: true,
 }.Froze()
 
