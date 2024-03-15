@@ -58,7 +58,6 @@ func Run(name string, runner func(context.Context), cleaner func()) {
 
 	// 清理任务
 	Add(name, func() {
-		logger.L.Println("graceful clean:", name)
 
 		cancel()
 
