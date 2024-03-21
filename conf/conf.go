@@ -14,7 +14,9 @@ func LoadByName[T any](name string) (*T, error) {
 	var err error
 
 	if name != "" {
-		envFile, err = file.Find(".env." + name)
+		envName := ".env." + name
+		logger.L.Println("envName:", envName)
+		envFile, err = file.Find(envName)
 	} else {
 		err = fmt.Errorf("no env name")
 	}
